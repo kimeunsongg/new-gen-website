@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TalentDiagram from "@/components/TalentDiagram";
-import { PageHeader, Pending } from "@/components/ui";
-import { HISTORY, MATTHEW, MISSION, PRINCIPAL, VISION } from "@/data/school";
+import { PageHeader } from "@/components/ui";
+import { GREETING, HISTORY, MATTHEW, MISSION, PRINCIPAL, VISION } from "@/data/school";
 
 export const metadata: Metadata = {
   title: "학교 소개",
@@ -93,21 +93,18 @@ export default function AboutPage() {
             <span className="ib">새로운 시대, 새로운 세대를 세우는</span>{" "}
             <span className="ib">뉴젠리더십학교에 오신 것을 환영합니다.</span>
           </h3>
-          {/* ⚠ 인사말 전문은 프로토타입(design/Newgen Site.dc.html)에 있음 — 원문 수급 후 교체 */}
-          <p>
-            <Pending>인사말 전문 입력 필요</Pending>
-          </p>
+          {GREETING.intro.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
           <div className="leadership__virtues">
-            <p>
-              <strong>성결</strong> <Pending />
-            </p>
-            <p>
-              <strong>성실</strong> <Pending />
-            </p>
-            <p>
-              <strong>성품</strong> <Pending />
-            </p>
+            <p>{GREETING.virtuesLead}</p>
+            {GREETING.virtues.map((v) => (
+              <p key={v.word}>
+                {v.order}는 “<strong>{v.word}</strong>”입니다. {v.text}
+              </p>
+            ))}
           </div>
+          <p>{GREETING.outro}</p>
           <p className="leadership__closing">축복합니다.</p>
         </div>
       </section>
