@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { ChevronIcon } from "./Icons";
 import { KakaoButton } from "./Kakao";
 
-// ⚠ 히어로 원본 사진(가로 1920px 이상) 미수급. src가 없으면 어두운 배경만 보입니다.
+// ⚠ 현재 사진은 228px / 258px 저해상도. 원본(가로 1920px 이상) 수급 시 교체
 const SLIDES: { src?: string; alt: string }[] = [
-  { alt: "천권독서 토론 수업 중인 학생들" },
-  { alt: "온마을활동에 참여한 학생들" },
+  { src: "/images/hero-1.png", alt: "학생이 마을 아이들에게 활동 자료를 보여 주는 모습" },
+  { src: "/images/hero-2.png", alt: "교실에서 수업 중인 학생들" },
 ];
 
 function prefersReducedMotion() {
