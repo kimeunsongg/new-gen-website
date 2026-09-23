@@ -670,6 +670,8 @@ a:focus-visible {
 /* ───────── About ───────── */
 .scroll-x {
   overflow-x: auto;
+  /* 타임라인 점(선 위로 7px + 흰 링 4px)이 잘리지 않도록 */
+  padding-top: 12px;
 }
 .timeline {
   display: grid;
