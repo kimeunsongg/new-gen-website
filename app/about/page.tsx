@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ScaleToFit from "@/components/ScaleToFit";
 import TalentDiagram from "@/components/TalentDiagram";
 import { PageHeader } from "@/components/ui";
 import { GREETING, HISTORY, MATTHEW, MISSION, PRINCIPAL, VISION } from "@/data/school";
@@ -17,7 +18,8 @@ export default function AboutPage() {
         <h2 id="history-title" className="section-title section-title--sm">
           연혁
         </h2>
-        <div className="scroll-x">
+        <ScaleToFit width={760}>
+          <div className="timeline-wrap">
           <ol className="timeline">
             {HISTORY.map((h) => (
               <li key={h.year}>
@@ -34,7 +36,8 @@ export default function AboutPage() {
               </li>
             ))}
           </ol>
-        </div>
+          </div>
+        </ScaleToFit>
       </section>
 
       <section className="band band--primary" aria-labelledby="mission-title">

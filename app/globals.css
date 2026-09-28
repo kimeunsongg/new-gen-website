@@ -667,9 +667,16 @@ a:focus-visible {
   margin-top: 8px;
 }
 
+/* ───────── 도식 축소 (ScaleToFit) ───────── */
+.fit {
+  overflow: hidden;
+}
+.fit__inner {
+  transform-origin: 0 0;
+}
+
 /* ───────── About ───────── */
-.scroll-x {
-  overflow-x: auto;
+.timeline-wrap {
   /* 타임라인 점(선 위로 7px + 흰 링 4px)이 잘리지 않도록 */
   padding-top: 12px;
 }
@@ -930,34 +937,29 @@ a:focus-visible {
 .acad-section {
   scroll-margin-top: 130px;
 }
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 16px;
-}
-.tags li {
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: var(--fill-normal);
-  font-size: 14px;
-  color: var(--label-neutral);
-}
-.creative__title {
-  margin-top: 20px;
-  font-size: 18px;
-  font-weight: 700;
-}
-.creative__title + .muted {
-  margin-top: 4px;
-  font-size: 15px;
+.subsection {
+  margin-top: 88px;
 }
 
+/* 기본방향 */
+.bd {
+  align-items: center;
+}
+.bd-diagram {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin: 0 auto;
+}
 .num-list li {
   display: flex;
   gap: 8px;
   padding: 20px 0;
   border-top: 1px solid var(--line-neutral);
+}
+.num-list li:last-child {
+  border-bottom: 1px solid var(--line-neutral);
 }
 .num-list__num {
   flex: 0 0 28px;
@@ -976,95 +978,234 @@ a:focus-visible {
   color: var(--label-alternative);
 }
 
-.four-um-wrap {
-  margin-top: 88px;
-}
-.four-um {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 40px 64px;
-  align-items: center;
-}
-.four-um__grid {
+/* 중점활동 4-UM */
+.um-board {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  width: 100%;
-  max-width: 440px;
-  aspect-ratio: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
 }
-.four-um__tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  background: var(--gray-99);
-  color: var(--label-normal);
-  transition: background-color 0.15s, color 0.15s;
+.um-card {
+  padding: 32px 32px 36px;
+  border-radius: 14px 14px 0 0;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--line-normal);
+  border-bottom: 10px solid var(--um);
 }
-.four-um__tile:hover {
-  background: var(--fill-strong);
+.um-card--1,
+.um-card--3 {
+  padding-left: 80px;
 }
-.four-um__tile strong {
-  font-size: 24px;
+.um-card__area {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--um);
+}
+.um-card__type {
+  margin-top: 2px;
+  font-size: 20px;
   font-weight: 700;
 }
-.four-um__tile span {
-  font-size: 13px;
-  font-weight: 600;
-  opacity: 0.72;
+.um-card ul {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--label-neutral);
 }
-.four-um__tile[aria-pressed="true"] {
-  background: var(--primary-normal);
-  color: #fff;
+.um-card li::before {
+  content: "· ";
 }
-.four-um__center {
+.um-ring {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 104px;
-  height: 104px;
+  width: 150px;
+  height: 150px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
+  display: grid;
+  place-items: center;
 }
-.four-um__center span {
-  font-size: 12px;
-  color: var(--label-alternative);
+.um-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
-.four-um__center strong {
-  font-size: 18px;
-  font-weight: 700;
-}
-.four-um__type {
-  font-size: 15px;
-  color: var(--primary-normal);
-}
-.four-um__area {
-  margin-top: 4px;
-  font-size: 28px;
-  font-weight: 700;
-}
-.four-um__list {
-  margin-top: 20px;
-}
-.four-um__list li {
-  padding: 15px 0;
-  border-top: 1px solid var(--line-neutral);
+.um-ring span {
+  text-align: center;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 700;
+  line-height: 1.25;
 }
-.four-um__list li:last-child {
-  border-bottom: 1px solid var(--line-neutral);
+.um-ring strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
 }
 
+/* 교육과정 패널 공통 */
+.edu-panel {
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px #1f2437;
+  overflow: hidden;
+}
+.edu-panel__bar {
+  padding: 16px 32px;
+  background: linear-gradient(90deg, #1b2160, #2b3486);
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+  border-radius: 20px 20px 0 0;
+}
+.edu-pill {
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.edu-pill small {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 4-텍스트 */
+.four-text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 40px 36px;
+}
+.four-text__goal ul {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 17px;
+  color: var(--label-normal);
+}
+.four-text__goal li::before {
+  content: "· ";
+}
+.four-text__goal span {
+  display: block;
+  padding-left: 14px;
+  color: var(--label-neutral);
+}
+.venn {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.four-text__method ol {
+  position: relative;
+  margin-top: 20px;
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 17px;
+}
+.four-text__method ol::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: #4f7d62;
+}
+.four-text__method ol::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid #4f7d62;
+  border-top: 2px solid #4f7d62;
+  transform: rotate(45deg);
+}
+.four-text__method li::before {
+  content: "· ";
+}
+
+/* 독서와 체험 흐름 */
+.reading-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1.4fr) 48px minmax(0, 1fr);
+  column-gap: 0;
+  align-items: center;
+  padding: 40px 36px;
+}
+.rf-sources {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rf-class {
+  border-radius: 20px;
+  background: linear-gradient(90deg, #1b2160, #2b3486);
+  padding: 14px 8px 8px;
+}
+.rf-class__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px 12px;
+  color: #fff;
+  font-size: 15px;
+}
+.rf-class__head strong {
+  font-size: 20px;
+}
+.rf-class__dash {
+  flex: 1;
+  border-top: 2px dashed rgba(255, 255, 255, 0.7);
+  max-width: 80px;
+}
+.rf-class ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  gap: 8px 16px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 16px;
+}
+.rf-class li::before,
+.rf-changche li::before {
+  content: "· ";
+}
+.rf-link {
+  align-self: center;
+  border-top: 2px dashed #3e4a6b;
+}
+.rf-changche {
+  padding: 20px;
+  border: 2px dashed #3e4a6b;
+}
+.rf-changche__pill {
+  background: linear-gradient(90deg, var(--edu-navy, #232c6e), #3f8a4f);
+}
+.rf-changche ul {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 16px;
+}
+
+/* K-리더십 */
 .kleader {
   align-items: center;
 }
@@ -1075,9 +1216,11 @@ a:focus-visible {
   border-radius: 12px;
   background: var(--gray-99);
 }
-.kleader__logo-slot {
-  max-width: 200px;
-  background: #fff;
+.kl-logo {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
 }
 .kleader__list li {
   display: flex;
@@ -1097,6 +1240,20 @@ a:focus-visible {
 }
 .kleader__photos {
   margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.kleader__photos img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 12px;
+}
+@media (max-width: 460px) {
+  .kleader__photos {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ───────── Calendar ───────── */
@@ -1443,4 +1600,17 @@ a:focus-visible {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* 도식 속 "· " 목록 — 줄이 넘어가면 둘째 줄을 첫 글자에 맞춤 */
+.um-card li,
+.four-text__goal li,
+.four-text__method li,
+.rf-class li,
+.rf-changche li {
+  padding-left: 0.7em;
+  text-indent: -0.7em;
+}
+.four-text__goal span {
+  text-indent: 0;
 }
