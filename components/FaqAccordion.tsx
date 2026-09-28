@@ -1,9 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import type { FaqItem } from "@/data/faq";
+import type { FaqBlock, FaqItem } from "@/data/faq";
 import { ChevronIcon } from "./Icons";
-import { Pending } from "./ui";
+
+/** "**굵게**" 표기를 <strong>으로 */
+function Rich({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("**").map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))}
+    </>
+  );
+}
+
+function Block({ block }: { block: FaqBlock }) {
+  if (typeof block === "string") {
+    return (
+      <p>
+        <Rich text={block} />
+      </p>
+    );
+  }
+  return (
+    <ul className="accordion__list">
+      {block.list.map((li, i) => (
+        <li key={i}>
+          {li.label && <strong>{li.label}: </strong>}
+          <Rich text={li.text} />
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function FaqAccordion({ items, defaultOpen = [] }: { items: FaqItem[]; defaultOpen?: string[] }) {
   const [open, setOpen] = useState(() => new Set(defaultOpen));
@@ -34,7 +62,9 @@ export default function FaqAccordion({ items, defaultOpen = [] }: { items: FaqIt
               <ChevronIcon dir={isOpen ? "up" : "down"} />
             </button>
             <div id={panelId} className="accordion__a" hidden={!isOpen}>
-              {it.a ? it.a.map((p, i) => <p key={i}>{p}</p>) : <p><Pending>답변 원문 입력 필요</Pending></p>}
+              {it.a.map((b, i) => (
+                <Block key={i} block={b} />
+              ))}
             </div>
           </li>
         );

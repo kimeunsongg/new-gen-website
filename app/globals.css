@@ -663,8 +663,31 @@ a:focus-visible {
   line-height: 1.75;
   color: var(--label-neutral);
 }
-.accordion__a p + p {
+.accordion__a > * + * {
   margin-top: 8px;
+}
+.accordion__a strong {
+  font-weight: 700;
+  color: var(--label-normal);
+}
+.accordion__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.accordion__list li {
+  position: relative;
+  padding-left: 14px;
+}
+.accordion__list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.8em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--label-alternative);
 }
 
 /* ───────── 도식 축소 (ScaleToFit) ───────── */
