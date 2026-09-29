@@ -1,5 +1,6 @@
-// 교육과정 도식 — 원본 브로셔(reference/edu/*.jpg)를 SVG/HTML로 재구성
-import { FOUR_UM } from "@/data/school";
+// 교육과정 도식 — 원본 브로셔(reference/edu/*.jpg)를 SVG/HTML로 재구성. 문구는 사전(data/dict.*)에서.
+import { getDict } from "@/data/dict";
+import type { Locale } from "@/lib/i18n";
 
 export const EDU = {
   blue: "#4A63D8",
@@ -13,11 +14,12 @@ export const EDU = {
 
 const BD_CX = 260;
 const BD_CY = 260;
+// 좌상 · 우상 · 좌하 · 우하
 const BD_PETALS = [
-  { x: -125, y: -112, color: EDU.blue, lines: ["진로적성 맞춤형", "교육과정", "재구성"], small: true },
-  { x: 125, y: -112, color: EDU.lime, lines: ["수업", "(배움중심)"] },
-  { x: -125, y: 112, color: EDU.navy, lines: ["기록", "(포트폴리오)"] },
-  { x: 125, y: 112, color: EDU.green, lines: ["평가", "(절대, 관찰)"] },
+  { x: -125, y: -112, color: EDU.blue },
+  { x: 125, y: -112, color: EDU.lime },
+  { x: -125, y: 112, color: EDU.navy },
+  { x: 125, y: 112, color: EDU.green },
 ];
 
 /** 위에서 시계방향 각도(deg) → 좌표 */
@@ -34,13 +36,13 @@ function cycleArc(gapDeg: number) {
   return `M ${x0.toFixed(1)} ${y0.toFixed(1)} A ${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`;
 }
 
-export function BasicDirectionsDiagram() {
+export function BasicDirectionsDiagram({ locale }: { locale: Locale }) {
+  const t = getDict(locale).diagrams.bd;
+  const centerLh = 32;
+  const centerTop = BD_CY - ((t.center.length - 1) * centerLh) / 2;
   return (
     <svg viewBox="-50 -50 620 620" className="bd-diagram" role="img" aria-labelledby="bd-title">
-      <title id="bd-title">
-        기본방향: 진로적성 맞춤형 교육과정 재구성, 수업(배움중심), 평가(절대, 관찰), 기록(포트폴리오)이 창의지성
-        4-텍스트를 중심으로 순환합니다.
-      </title>
+      <title id="bd-title">{t.title}</title>
       <defs>
         <marker id="bd-arrow" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 10 5 0 10z" fill="#3E4A6B" />
@@ -59,17 +61,18 @@ export function BasicDirectionsDiagram() {
           markerEnd="url(#bd-arrow)"
         />
       ))}
-      {BD_PETALS.map((p) => {
-        const cx = BD_CX + p.x;
-        const cy = BD_CY + p.y;
+      {BD_PETALS.map((geo, pi) => {
+        const p = t.petals[pi];
+        const cx = BD_CX + geo.x;
+        const cy = BD_CY + geo.y;
         // 글자는 가운데 흰 원을 피해 바깥쪽으로 조금 이동
-        const tx = cx + Math.sign(p.x) * 14;
-        const ty = cy + Math.sign(p.y) * 10;
+        const tx = cx + Math.sign(geo.x) * 14;
+        const ty = cy + Math.sign(geo.y) * 10;
         const lh = p.small ? 28 : 34;
         const startY = ty - ((p.lines.length - 1) * lh) / 2;
         return (
-          <g key={p.lines[0]}>
-            <circle cx={cx} cy={cy} r={118} fill={p.color} />
+          <g key={pi}>
+            <circle cx={cx} cy={cy} r={118} fill={geo.color} />
             <text textAnchor="middle" fill="#fff" fontWeight={700}>
               {p.lines.map((l, i) => (
                 <tspan
@@ -88,12 +91,11 @@ export function BasicDirectionsDiagram() {
       })}
       <circle cx={BD_CX} cy={BD_CY} r={82} fill="#fff" />
       <text textAnchor="middle" fontWeight={800} fill="#171717">
-        <tspan x={BD_CX} y={BD_CY - 16} dominantBaseline="middle" fontSize="26">
-          창의지성
-        </tspan>
-        <tspan x={BD_CX} y={BD_CY + 18} dominantBaseline="middle" fontSize="28">
-          4-텍스트
-        </tspan>
+        {t.center.map((c, i) => (
+          <tspan key={c.text} x={BD_CX} y={centerTop + i * centerLh} dominantBaseline="middle" fontSize={c.size}>
+            {c.text}
+          </tspan>
+        ))}
       </text>
     </svg>
   );
@@ -103,13 +105,14 @@ export function BasicDirectionsDiagram() {
 
 const UM_COLORS = [EDU.green, EDU.lime, EDU.navy, EDU.blue];
 
-export function FourUmBoard() {
+export function FourUmBoard({ locale }: { locale: Locale }) {
+  const d = getDict(locale);
   return (
     <div className="um-board">
-      {FOUR_UM.map((u, i) => (
-        <article key={u.area} className={`um-card um-card--${i}`} style={{ "--um": UM_COLORS[i] } as React.CSSProperties}>
-          <p className="um-card__area">{u.area}영역</p>
-          <h4 className="um-card__type">{u.type} 교육과정</h4>
+      {d.fourUm.map((u, i) => (
+        <article key={u.areaLabel} className={`um-card um-card--${i}`} style={{ "--um": UM_COLORS[i] } as React.CSSProperties}>
+          <p className="um-card__area">{u.areaLabel}</p>
+          <h4 className="um-card__type">{u.cardType}</h4>
           <ul>
             {u.activities.map((a) => (
               <li key={a}>{a}</li>
@@ -133,8 +136,8 @@ export function FourUmBoard() {
           })}
         </svg>
         <span>
-          중점활동
-          <strong>4-UM</strong>
+          {d.diagrams.ring[0]}
+          <strong>{d.diagrams.ring[1]}</strong>
         </span>
       </div>
     </div>
@@ -143,21 +146,15 @@ export function FourUmBoard() {
 
 /* ───────── 4-텍스트: 목표 · 벤다이어그램 · 방법 ───────── */
 
-const GOALS = [
-  { goal: "과학적 통찰력", result: "직관, 상상력" },
-  { goal: "독창적 문제발견과 해결", result: "기획, 생산, 창조" },
-  { goal: "시민적 가치와 생활능력", result: "사회적 인성" },
-];
-// 아래에서 위로 올라가는 단계 (원본에 Presentation이 두 번 인쇄되어 있어 하나로 정리)
-const METHODS = ["Presentation", "Writing / Creating", "Discussion", "Thinking", "Text Reading"];
-
-function FourTextVenn() {
+function FourTextVenn({ locale }: { locale: Locale }) {
+  const v = getDict(locale).diagrams.venn;
+  // 제목류 글자는 언어별 배율로 줄임(영문이 더 김)
+  const fs = (n: number) => Math.round(n * v.scale);
+  // 대괄호 설명은 너무 작아지지 않게 최소 16
+  const sub = (n: number) => Math.max(fs(n), 16);
   return (
     <svg viewBox="470 500 690 590" className="venn" role="img" aria-labelledby="venn-title">
-      <title id="venn-title">
-        4-텍스트: 1 인류의 지적 전통(인류역사 자산 1)을 중심으로 2 문학적 소양(인류역사 자산 2), 3 경험과 실험·제작(경험,
-        실험 지식), 4 사회적 실천(정체성과 책임)이 겹쳐 있습니다.
-      </title>
+      <title id="venn-title">{v.title}</title>
       <g style={{ mixBlendMode: "multiply" }}>
         <circle cx="815" cy="680" r="165" fill={EDU.lime} />
       </g>
@@ -172,42 +169,43 @@ function FourTextVenn() {
 
       <g textAnchor="middle" fill="#fff" fontWeight={700}>
         <text x="815" y="585" fontSize="34">4</text>
-        <text x="815" y="637" fontSize="32">사회적 실천</text>
-        <text x="815" y="675" fontSize="21" opacity="0.9">[정체성과 책임]</text>
+        <text x="815" y="637" fontSize={fs(32)}>{v.c4.title}</text>
+        <text x="815" y="675" fontSize={sub(21)} opacity="0.9">{v.c4.sub}</text>
 
         <text x="1018" y="840" fontSize="34">2</text>
-        <text x="1018" y="900" fontSize="30">문학적</text>
-        <text x="1018" y="942" fontSize="30">소양</text>
-        <text x="1018" y="990" fontSize="20" opacity="0.9">[인류역사 자산 2]</text>
+        <text x="1018" y="900" fontSize={fs(30)}>{v.c2.lines[0]}</text>
+        <text x="1018" y="942" fontSize={fs(30)}>{v.c2.lines[1]}</text>
+        <text x="1018" y="990" fontSize={sub(20)} opacity="0.9">{v.c2.sub}</text>
 
-        <text x="612" y="835" fontSize="34">3</text>
-        <text x="612" y="897" fontSize="28">경험과</text>
-        <rect x="528" y="918" width="168" height="46" fill="#E57A12" />
-        <text x="612" y="952" fontSize="30">실험 · 제작</text>
-        <text x="612" y="998" fontSize="20" opacity="0.9">[경험, 실험 지식]</text>
+        <text x={v.c3.x} y="835" fontSize="34">3</text>
+        <text x={v.c3.x} y="897" fontSize={fs(28)}>{v.c3.pre}</text>
+        <rect x={v.c3.x - v.c3.boxW / 2} y="918" width={v.c3.boxW} height="46" fill="#E57A12" />
+        <text x={v.c3.x} y="952" fontSize={fs(30)}>{v.c3.box}</text>
+        <text x={v.c3.x} y="998" fontSize={sub(20)} opacity="0.9">{v.c3.sub}</text>
       </g>
       <g textAnchor="middle" fill="#171717">
         <text x="815" y="760" fontSize="32" fontWeight={700}>1</text>
-        <text x="815" y="812" fontSize="28" fontWeight={600}>인류의</text>
-        <rect x="725" y="828" width="180" height="46" fill="#EDEEF2" />
-        <text x="815" y="862" fontSize="32" fontWeight={800}>지적 전통</text>
-        <text x="815" y="905" fontSize="20">[인류역사 자산 1]</text>
+        <text x="815" y="812" fontSize={fs(28)} fontWeight={600}>{v.c1.pre}</text>
+        <rect x={815 - v.c1.boxW / 2} y="828" width={v.c1.boxW} height="46" fill="#EDEEF2" />
+        <text x="815" y="862" fontSize={fs(32)} fontWeight={800}>{v.c1.box}</text>
+        <text x="815" y="905" fontSize={sub(20)}>{v.c1.sub}</text>
       </g>
     </svg>
   );
 }
 
-export function FourTextPanel() {
+export function FourTextPanel({ locale }: { locale: Locale }) {
+  const t = getDict(locale).diagrams.fourText;
   return (
     <div className="edu-panel">
-      <p className="edu-panel__bar">창의지성교육 : 창의성을 지성교육으로 달성하는 것</p>
+      <p className="edu-panel__bar">{t.bar}</p>
       <div className="four-text">
         <div className="four-text__goal">
           <p className="edu-pill" style={{ background: EDU.blue }}>
-            목표: 창의성
+            {t.goalPill}
           </p>
           <ul>
-            {GOALS.map((g) => (
+            {t.goals.map((g) => (
               <li key={g.goal}>
                 {g.goal}
                 <span>▶ {g.result}</span>
@@ -215,13 +213,13 @@ export function FourTextPanel() {
             ))}
           </ul>
         </div>
-        <FourTextVenn />
+        <FourTextVenn locale={locale} />
         <div className="four-text__method">
           <p className="edu-pill" style={{ background: EDU.green }}>
-            방법: 지성교육 <small>(비판적 사고)</small>
+            {t.methodPill} <small>{t.methodNote}</small>
           </p>
           <ol reversed>
-            {METHODS.map((m) => (
+            {t.methods.map((m) => (
               <li key={m}>{m}</li>
             ))}
           </ol>
@@ -233,14 +231,14 @@ export function FourTextPanel() {
 
 /* ───────── 독서와 체험: 독서 인프라 → 새로운 수업 ↔ 창체 인프라 ───────── */
 
-const NEW_CLASS = ["내용확인", "질문과 아이디어", "사고와 표현", "토론과 재사고", "새로운 과제 설정"];
-const CHANGCHE = ["다양한 체험 프로그램", "다양한 사회적 실천 프로그램", "문화예술작품 감상 네트워크와 역량 강화"];
-
-function ReadingSources() {
+function ReadingSources({ locale }: { locale: Locale }) {
+  const t = getDict(locale).diagrams.reading;
   const line = { fill: "none", stroke: "#2F5B3F", strokeWidth: 2, markerEnd: "url(#rf-arrow)" };
+  const pw = t.pills.width;
+  const px = 216 - pw / 2;
   return (
     <svg viewBox="0 0 330 260" className="rf-sources" role="img" aria-labelledby="rf-src-title">
-      <title id="rf-src-title">독서 인프라에서 대안교과서와 연관 아티클을 거쳐 새로운 수업으로 이어집니다.</title>
+      <title id="rf-src-title">{t.title}</title>
       <defs>
         <marker id="rf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 10 5 0 10" fill="none" stroke="#2F5B3F" strokeWidth="2" />
@@ -252,52 +250,55 @@ function ReadingSources() {
       </defs>
       <circle cx="68" cy="130" r="64" fill="none" stroke="#3E4A6B" strokeWidth="2" strokeDasharray="2 4" />
       <circle cx="68" cy="130" r="56" fill="url(#rf-grad)" />
-      <text textAnchor="middle" fill="#fff" fontWeight={700} fontSize="22">
-        <tspan x="68" y="122">독서</tspan>
-        <tspan x="68" y="150">인프라</tspan>
+      <text textAnchor="middle" fill="#fff" fontWeight={700} fontSize={t.source.size}>
+        <tspan x="68" y="122">{t.source.lines[0]}</tspan>
+        <tspan x="68" y="122" dy={t.source.size + 6}>
+          {t.source.lines[1]}
+        </tspan>
       </text>
 
-      <path d="M 96 72 V 32 H 152" {...line} />
-      <rect x="156" y="14" width="120" height="36" rx="18" fill="#C9D3F5" />
-      <text x="216" y="38" textAnchor="middle" fontSize="16" fill="#26307A" fontWeight={600}>
-        대안교과서
+      <path d={`M 96 72 V 32 H ${px - 4}`} {...line} />
+      <rect x={px} y="14" width={pw} height="36" rx="18" fill="#C9D3F5" />
+      <text x="216" y="38" textAnchor="middle" fontSize={t.pills.size} fill="#26307A" fontWeight={600}>
+        {t.pills.top}
       </text>
       <path d="M 212 50 V 78 H 328" {...line} />
 
       <path d="M 140 130 H 328" {...line} />
 
-      <rect x="156" y="210" width="120" height="36" rx="18" fill="#C9D3F5" />
-      <text x="216" y="234" textAnchor="middle" fontSize="16" fill="#26307A" fontWeight={600}>
-        연관 아티클
+      <rect x={px} y="210" width={pw} height="36" rx="18" fill="#C9D3F5" />
+      <text x="216" y="234" textAnchor="middle" fontSize={t.pills.size} fill="#26307A" fontWeight={600}>
+        {t.pills.bottom}
       </text>
       <path d="M 212 210 V 184 H 328" {...line} />
     </svg>
   );
 }
 
-export function ReadingFlowPanel() {
+export function ReadingFlowPanel({ locale }: { locale: Locale }) {
+  const t = getDict(locale).diagrams.reading;
   return (
     <div className="edu-panel">
-      <p className="edu-panel__bar">교과연계 주제별 명저 독서목록</p>
+      <p className="edu-panel__bar">{t.bar}</p>
       <div className="reading-flow">
-        <ReadingSources />
+        <ReadingSources locale={locale} />
         <div className="rf-class">
           <p className="rf-class__head">
-            <strong>새로운 수업</strong>
+            <strong>{t.classTitle}</strong>
             <span className="rf-class__dash" aria-hidden="true" />
-            <span>배움중심수업</span>
+            <span>{t.classNote}</span>
           </p>
           <ul>
-            {NEW_CLASS.map((c) => (
+            {t.classItems.map((c) => (
               <li key={c}>{c}</li>
             ))}
           </ul>
         </div>
         <span className="rf-link" aria-hidden="true" />
         <div className="rf-changche">
-          <p className="edu-pill rf-changche__pill">창체 인프라</p>
+          <p className="edu-pill rf-changche__pill">{t.changche}</p>
           <ul>
-            {CHANGCHE.map((c) => (
+            {t.changcheItems.map((c) => (
               <li key={c}>{c}</li>
             ))}
           </ul>
@@ -316,28 +317,28 @@ const KL_GRID = [
   ["s", "o", "s"],
 ];
 
-export function KLeaderLogo() {
+export function KLeaderLogo({ locale }: { locale: Locale }) {
   const cols = [120, 260, 400];
   const rows = [172, 268, 364];
   return (
     <svg viewBox="0 0 520 450" className="kl-logo" role="img" aria-labelledby="kl-title">
-      <title id="kl-title">Korea The YEOSU K-Leadership 로고. 여수시, 손양원 목사, 이순신 장군의 초성으로 구성</title>
+      <title id="kl-title">{getDict(locale).academics.kleader.logoTitle}</title>
       <rect width="520" height="450" rx="10" fill="#243C8F" />
       <g transform="translate(22 0)">
-      <text x="40" y="84" fill="#fff" fontSize="40" fontWeight={800}>
-        Korea
-      </text>
-      <circle cx="222" cy="72" r="38" fill="#fff" />
-      <circle cx="222" cy="72" r="32" fill="#2F58C8" />
-      <text x="222" y="62" textAnchor="middle" fill="#fff" fontSize="12" fontStyle="italic" fontWeight={700}>
-        The
-      </text>
-      <text x="222" y="82" textAnchor="middle" fill="#fff" fontSize="16" fontWeight={800}>
-        YEOSU
-      </text>
-      <text x="274" y="84" fill="#fff" fontSize="26" fontWeight={600}>
-        K-Leadership
-      </text>
+        <text x="40" y="84" fill="#fff" fontSize="40" fontWeight={800}>
+          Korea
+        </text>
+        <circle cx="222" cy="72" r="38" fill="#fff" />
+        <circle cx="222" cy="72" r="32" fill="#2F58C8" />
+        <text x="222" y="62" textAnchor="middle" fill="#fff" fontSize="12" fontStyle="italic" fontWeight={700}>
+          The
+        </text>
+        <text x="222" y="82" textAnchor="middle" fill="#fff" fontSize="16" fontWeight={800}>
+          YEOSU
+        </text>
+        <text x="274" y="84" fill="#fff" fontSize="26" fontWeight={600}>
+          K-Leadership
+        </text>
       </g>
       <g stroke="#fff" fill="none" strokeLinecap="round" strokeLinejoin="round">
         {KL_GRID.map((row, r) =>

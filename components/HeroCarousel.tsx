@@ -2,28 +2,28 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getDict } from "@/data/dict";
+import { localePath, type Locale } from "@/lib/i18n";
 import { ChevronIcon } from "./Icons";
 import { KakaoButton } from "./Kakao";
 
 // ⚠ 현재 사진은 228px / 258px 저해상도. 원본(가로 1920px 이상) 수급 시 교체
-const SLIDES: { src?: string; alt: string }[] = [
-  { src: "/images/hero-1.png", alt: "학생이 마을 아이들에게 활동 자료를 보여 주는 모습" },
-  { src: "/images/hero-2.png", alt: "교실에서 수업 중인 학생들" },
-];
+const SLIDE_SRC = ["/images/hero-1.png", "/images/hero-2.png"];
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ locale }: { locale: Locale }) {
+  const t = getDict(locale).hero;
   const [idx, setIdx] = useState(0);
   const [auto, setAuto] = useState(true);
-  const n = SLIDES.length;
+  const n = SLIDE_SRC.length;
 
   useEffect(() => {
     if (!auto || n < 2 || prefersReducedMotion()) return;
-    const t = window.setInterval(() => setIdx((i) => (i + 1) % n), 5000);
-    return () => window.clearInterval(t);
+    const timer = window.setInterval(() => setIdx((i) => (i + 1) % n), 5000);
+    return () => window.clearInterval(timer);
   }, [auto, n]);
 
   const go = (d: number) => {
@@ -32,43 +32,43 @@ export default function HeroCarousel() {
   };
 
   return (
-    <section className="hero" role="region" aria-roledescription="carousel" aria-label="학교 활동 사진">
+    <section className="hero" role="region" aria-roledescription="carousel" aria-label={t.aria}>
       <div className="hero__track" style={{ transform: `translateX(-${idx * 100}%)` }}>
-        {SLIDES.map((s, i) => (
+        {SLIDE_SRC.map((src, i) => (
           <div
-            key={i}
+            key={src}
             className="hero__slide"
             role="img"
-            aria-label={s.alt}
+            aria-label={t.slides[i]}
             aria-hidden={i !== idx}
-            style={s.src ? { backgroundImage: `url(${s.src})` } : undefined}
+            style={{ backgroundImage: `url(${src})` }}
           />
         ))}
       </div>
       <div className="hero__scrim" />
       <div className="container hero__content">
-        <p className="hero__eyebrow">전남 여수 · 기독교 대안학교</p>
+        <p className="hero__eyebrow">{t.eyebrow}</p>
         <h1 className="hero__title">
-          <span className="nowrap">천권독서로 &apos;꿈&apos;과 &apos;꿈너머꿈&apos;을</span>{" "}
-          <span className="nowrap">꾸는 교육 공동체</span>
+          <span className={t.keepTogether ? "nowrap" : undefined}>{t.title[0]}</span>{" "}
+          <span className={t.keepTogether ? "nowrap" : undefined}>{t.title[1]}</span>
         </h1>
-        <p className="hero__desc">&apos;꿈&apos;과 &apos;꿈너머꿈&apos;을 실현하여 소금과 빛이 되는 인재를 양성합니다.</p>
+        <p className="hero__desc">{t.desc}</p>
         <div className="hero__actions">
-          <KakaoButton className="btn btn--kakao btn--hero">카카오톡 입학 상담</KakaoButton>
-          <Link href="/academics/" className="btn btn--white btn--hero">
-            교육과정 보기
+          <KakaoButton className="btn btn--kakao btn--hero">{t.ctaKakao}</KakaoButton>
+          <Link href={localePath(locale, "/academics/")} className="btn btn--white btn--hero">
+            {t.ctaAcademics}
           </Link>
         </div>
       </div>
       {n > 1 && (
         <div className="container hero__controls">
-          <button type="button" className="hero__arrow" onClick={() => go(-1)} aria-label="이전 사진">
+          <button type="button" className="hero__arrow" onClick={() => go(-1)} aria-label={t.prev}>
             <ChevronIcon dir="left" />
           </button>
           <span aria-live="polite">
             {idx + 1} / {n}
           </span>
-          <button type="button" className="hero__arrow" onClick={() => go(1)} aria-label="다음 사진">
+          <button type="button" className="hero__arrow" onClick={() => go(1)} aria-label={t.next}>
             <ChevronIcon />
           </button>
         </div>

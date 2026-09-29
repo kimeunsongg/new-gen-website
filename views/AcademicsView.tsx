@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { AcademicCalendar } from "@/components/Calendar";
 import {
   BasicDirectionsDiagram,
@@ -10,27 +9,17 @@ import {
 import ScaleToFit from "@/components/ScaleToFit";
 import { SectionTabs } from "@/components/ScrollNav";
 import { PageHeader, SectionHead } from "@/components/ui";
-
-export const metadata: Metadata = {
-  title: "교육과정",
-  description: "교육과정 운영(기본방향, 중점활동 4-UM), 창의지성 교육과정, K-리더십 지역교육과정, 2026학년도 학사달력을 소개합니다.",
-};
-
-const TABS = [
-  { id: "operation", label: "교육과정 운영" },
-  { id: "creative", label: "창의지성 교육과정" },
-  { id: "kleader", label: "지역교육과정 개발" },
-  { id: "calendar", label: "학사달력" },
-];
+import { getDict } from "@/data/dict";
+import type { Locale } from "@/lib/i18n";
 
 // 브로셔 배치대로: 1·2는 한 줄, 3·4는 각각 한 줄. w/h는 원본 픽셀 크기(자르지 않고 비율 유지)
 const KLEADER_PHOTO_ROWS = [
   [
-    { src: "/images/kleader-1.jpg", w: 359, h: 290, alt: "학생이 마을 아이들에게 활동 자료를 보여 주는 모습" },
-    { src: "/images/kleader-2.jpg", w: 547, h: 292, alt: "무대에서 공연하는 학생들" },
+    { src: "/images/kleader-1.jpg", w: 359, h: 290 },
+    { src: "/images/kleader-2.jpg", w: 547, h: 292 },
   ],
-  [{ src: "/images/kleader-3.jpg", w: 969, h: 302, alt: "라디오 스튜디오에서 방송에 참여한 학생들" }],
-  [{ src: "/images/kleader-4.jpg", w: 978, h: 310, alt: "숲속 힐링 음악회에서 공연하는 학생들" }],
+  [{ src: "/images/kleader-3.jpg", w: 969, h: 302 }],
+  [{ src: "/images/kleader-4.jpg", w: 978, h: 310 }],
 ];
 
 /** 브로셔 한 면: 옅은 색 배경 + 큰 제목 + 흰 카드 + 책갈피 리본 */
@@ -62,37 +51,47 @@ function EduSub({ children }: { children: React.ReactNode }) {
   return <h3 className="edu-sub">{children}</h3>;
 }
 
-export default function AcademicsPage() {
+export default function AcademicsView({ locale }: { locale: Locale }) {
+  const a = getDict(locale).academics;
+  let photo = 0;
   return (
     <>
-      <PageHeader title="교육과정" desc="독서와 체험, 실천과 참여로 이어지는 뉴젠리더십학교의 배움을 소개합니다." />
-      <SectionTabs items={TABS} />
+      <PageHeader title={a.title} desc={a.desc} />
+      <SectionTabs
+        label={a.tabsAria}
+        items={[
+          { id: "operation", label: a.tabs.operation },
+          { id: "creative", label: a.tabs.creative },
+          { id: "kleader", label: a.tabs.kleader },
+          { id: "calendar", label: a.tabs.calendar },
+        ]}
+      />
 
-      <EduSheet id="operation" title="교육과정 운영" tone="green">
-        <EduSub>기본방향</EduSub>
-        <BasicDirectionsDiagram />
-        <EduSub>중점활동</EduSub>
+      <EduSheet id="operation" title={a.operation.title} tone="green">
+        <EduSub>{a.operation.basic}</EduSub>
+        <BasicDirectionsDiagram locale={locale} />
+        <EduSub>{a.operation.core}</EduSub>
         <ScaleToFit width={900}>
-          <FourUmBoard />
+          <FourUmBoard locale={locale} />
         </ScaleToFit>
       </EduSheet>
 
-      <EduSheet id="creative" title="창의지성 교육과정" tone="navy">
-        <EduSub>4-텍스트</EduSub>
+      <EduSheet id="creative" title={a.creative.title} tone="navy">
+        <EduSub>{a.creative.fourText}</EduSub>
         <ScaleToFit width={960}>
-          <FourTextPanel />
+          <FourTextPanel locale={locale} />
         </ScaleToFit>
-        <EduSub>독서와 체험의 의미를 되살리는 새 교육과정</EduSub>
+        <EduSub>{a.creative.reading}</EduSub>
         <ScaleToFit width={960}>
-          <ReadingFlowPanel />
+          <ReadingFlowPanel locale={locale} />
         </ScaleToFit>
       </EduSheet>
 
-      <EduSheet id="kleader" title="지역교육과정 개발" tone="teal">
-        <EduSub>K-리더십</EduSub>
-        <p className="kleader__projects">이순신 장군 프로젝트 / 손양원 목사 프로젝트</p>
+      <EduSheet id="kleader" title={a.kleader.title} tone="teal">
+        <EduSub>{a.kleader.sub}</EduSub>
+        <p className="kleader__projects">{a.kleader.projects}</p>
         <div className="kleader__logo">
-          <KLeaderLogo />
+          <KLeaderLogo locale={locale} />
         </div>
         <div className="kleader__photos">
           {KLEADER_PHOTO_ROWS.map((row, i) => (
@@ -101,7 +100,7 @@ export default function AcademicsPage() {
                 <img
                   key={p.src}
                   src={p.src}
-                  alt={p.alt}
+                  alt={a.kleader.photos[photo++]}
                   width={p.w}
                   height={p.h}
                   loading="lazy"
@@ -114,8 +113,8 @@ export default function AcademicsPage() {
       </EduSheet>
 
       <section id="calendar" className="container section acad-section" aria-labelledby="calendar-title">
-        <SectionHead id="calendar-title" eyebrow="학사일정" title="2026학년도 학사달력" />
-        <AcademicCalendar />
+        <SectionHead id="calendar-title" eyebrow={a.calendarEyebrow} title={a.calendarTitle} />
+        <AcademicCalendar locale={locale} />
       </section>
     </>
   );

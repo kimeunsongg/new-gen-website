@@ -1,4 +1,6 @@
+import { getDict } from "@/data/dict";
 import { SITE } from "@/data/site";
+import type { Locale } from "@/lib/i18n";
 import { KakaoIcon } from "./Icons";
 
 type Props = { children: React.ReactNode; className?: string; iconSize?: number };
@@ -12,29 +14,36 @@ export function KakaoButton({ children, className = "btn btn--kakao", iconSize =
   );
 }
 
-export function KakaoFloat() {
+export function KakaoFloat({ locale }: { locale: Locale }) {
   return (
-    <a href={SITE.kakaoUrl} target="_blank" rel="noopener noreferrer" className="kakao-float" aria-label="카카오톡 상담">
+    <a
+      href={SITE.kakaoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="kakao-float"
+      aria-label={getDict(locale).common.kakaoFloat}
+    >
       <KakaoIcon size={28} />
     </a>
   );
 }
 
-export function ConsultBand() {
+export function ConsultBand({ locale }: { locale: Locale }) {
+  const t = getDict(locale).common.consult;
   return (
     <section className="consult-band" aria-labelledby="consult-title">
       <div className="container consult-band__inner">
         <div>
           <h2 id="consult-title" className="consult-band__title">
-            입학 상담은 카카오톡으로
+            {t.title}
           </h2>
           <p className="consult-band__desc">
-            입학은 별도의 복잡한 시험 없이, 편안한 대면 상담을 통해 진행됩니다.
+            {t.desc[0]}
             <br />
-            먼저 편하게 상담을 신청해 주세요.
+            {t.desc[1]}
           </p>
         </div>
-        <KakaoButton className="btn btn--kakao btn--lg">상담 연결하기</KakaoButton>
+        <KakaoButton className="btn btn--kakao btn--lg">{t.button}</KakaoButton>
       </div>
     </section>
   );

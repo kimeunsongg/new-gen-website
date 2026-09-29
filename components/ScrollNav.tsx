@@ -31,14 +31,14 @@ function useActiveSection(ids: string[], offset: number) {
   return active;
 }
 
-export function SectionTabs({ items }: { items: Item[] }) {
+export function SectionTabs({ items, label }: { items: Item[]; label: string }) {
   const active = useActiveSection(
     items.map((i) => i.id),
     130
   );
   return (
     <div className="section-tabs">
-      <nav className="container section-tabs__inner" aria-label="교육과정 섹션">
+      <nav className="container section-tabs__inner" aria-label={label}>
         {items.map((it) => (
           <button
             key={it.id}
@@ -55,13 +55,13 @@ export function SectionTabs({ items }: { items: Item[] }) {
   );
 }
 
-export function CategoryNav({ items }: { items: Item[] }) {
+export function CategoryNav({ items, label }: { items: Item[]; label: string }) {
   const active = useActiveSection(
     items.map((i) => i.id),
     88
   );
   return (
-    <nav className="faq-nav" aria-label="FAQ 카테고리">
+    <nav className="faq-nav" aria-label={label}>
       {items.map((it) => (
         <button
           key={it.id}

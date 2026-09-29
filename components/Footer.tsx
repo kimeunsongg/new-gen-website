@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { getDict } from "@/data/dict";
 import { SITE, SNS } from "@/data/site";
+import { localePath, type Locale } from "@/lib/i18n";
 import { BlogIcon, InstagramIcon, YoutubeIcon } from "./Icons";
 
 const SNS_ICON = { instagram: InstagramIcon, youtube: YoutubeIcon, blog: BlogIcon };
 
-export default function Footer() {
+export default function Footer({ locale }: { locale: Locale }) {
+  const t = getDict(locale).common;
   return (
     <footer className="site-footer">
       <div className="container">
@@ -12,15 +15,17 @@ export default function Footer() {
           <div className="site-footer__brand">
             <div className="site-footer__name">
               <img src="/images/logo-emblem.png" alt="" width={48} height={48} />
-              <span>{SITE.name}</span>
+              <span>{t.schoolName}</span>
             </div>
-            <p className="site-footer__address">{SITE.address}</p>
+            <p className="site-footer__address">{t.address}</p>
           </div>
           <div className="site-footer__contact">
-            <p className="site-footer__label">CONTACT</p>
-            <a href={SITE.phoneHref}>Phone. {SITE.phone}</a>
+            <p className="site-footer__label">{t.contact}</p>
+            <a href={SITE.phoneHref}>
+              {t.phone} {SITE.phone}
+            </a>
             <a href={SITE.kakaoUrl} target="_blank" rel="noopener noreferrer">
-              카카오 상담. {SITE.kakaoId}
+              {t.kakao} {SITE.kakaoId}
             </a>
           </div>
           <ul className="site-footer__sns">
@@ -28,7 +33,7 @@ export default function Footer() {
               const Icon = SNS_ICON[s.key];
               return (
                 <li key={s.key}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (새 창)`}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.sns[s.key]} (${t.newWindow})`}>
                     <Icon size={20} />
                   </a>
                 </li>
@@ -38,8 +43,8 @@ export default function Footer() {
         </div>
         <div className="site-footer__bottom">
           <div className="site-footer__legal">
-            <Link href="/privacy/">개인정보처리방침</Link>
-            <Link href="/terms/">이용약관</Link>
+            <Link href={localePath(locale, "/privacy/")}>{t.privacy}</Link>
+            <Link href={localePath(locale, "/terms/")}>{t.terms}</Link>
           </div>
           <p>© Newgen Leadership School</p>
         </div>

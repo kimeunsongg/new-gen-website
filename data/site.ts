@@ -1,7 +1,7 @@
 export const SITE = {
   name: "뉴젠리더십학교",
   nameEn: "Newgen Leadership School",
-  url: "https://newgenschool.kr", // TODO: 실제 도메인 확정 후 교체
+  url: "https://new-gen-website-production.up.railway.app", // 학교 도메인 연결 시 교체
   description:
     "전남 여수의 기독교 대안학교 뉴젠리더십학교. 천권독서로 '꿈'과 '꿈너머꿈'을 꾸는 교육 공동체입니다.",
   address: "전남 여수시 망마로 30 5F",

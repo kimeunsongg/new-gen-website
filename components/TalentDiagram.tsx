@@ -1,4 +1,5 @@
-import { TALENTS } from "@/data/school";
+import { getDict } from "@/data/dict";
+import type { Locale } from "@/lib/i18n";
 
 const R = 135;
 const CY = 150;
@@ -28,7 +29,8 @@ function paths(i: number) {
   return [arc(cx, -(Math.PI - GAP), Math.PI - GAP)]; // 왼쪽만 끊김
 }
 
-export default function TalentDiagram() {
+export default function TalentDiagram({ locale }: { locale: Locale }) {
+  const TALENTS = getDict(locale).talents;
   return (
     <div className="talent">
       <div className="talent__figure">
