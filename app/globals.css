@@ -1500,6 +1500,14 @@ a.lang-switch__opt:hover {
   }
 }
 
+/* 도식 아래 뜻풀이 (연한 글씨) */
+.edu-note {
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--label-alternative);
+}
+
 /* 기본방향 */
 .bd-diagram {
   display: block;

@@ -389,6 +389,12 @@ export const DICT_EN: Dict = {
       logoTitle:
         "Korea The YEOSU K-Leadership logo, built from the Korean initials of Yeosu City, Pastor Son Yang-won and Admiral Yi Sun-sin",
     },
+    notes: {
+      fourText:
+        "4-Text: Aiming at ‘achieving creativity through intellectual education,’ this curriculum lets students learn four connected areas of text in stages — from the intellectual heritage humanity has built up to practice in everyday life.",
+      fourUm:
+        "4-UM: A practice-based curriculum in four areas — Learning, Growing, Filling and Sharing — designed to develop intellectual growth and practical ability in balance.",
+    },
     calendarEyebrow: "Academic Schedule",
     calendarTitle: "2026 Academic Calendar",
   },

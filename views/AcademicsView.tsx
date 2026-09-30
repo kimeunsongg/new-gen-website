@@ -76,6 +76,7 @@ export default function AcademicsView({ locale }: { locale: Locale }) {
         <ScaleToFit width={900}>
           <FourUmBoard locale={locale} />
         </ScaleToFit>
+        <p className="edu-note">{a.notes.fourUm}</p>
       </EduSheet>
 
       <EduSheet id="creative" title={a.creative.title} tone="navy">
@@ -83,6 +84,7 @@ export default function AcademicsView({ locale }: { locale: Locale }) {
         <ScaleToFit width={960}>
           <FourTextPanel locale={locale} />
         </ScaleToFit>
+        <p className="edu-note">{a.notes.fourText}</p>
         <EduSub>{a.creative.reading}</EduSub>
         <ScaleToFit width={960}>
           <ReadingFlowPanel locale={locale} />
