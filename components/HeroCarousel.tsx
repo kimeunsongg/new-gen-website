@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { getDict } from "@/data/dict";
 import { localePath, type Locale } from "@/lib/i18n";
 import { KakaoButton } from "./Kakao";
+import Typewriter from "./Typewriter";
 
 // ⚠ 현재 사진은 228px / 258px 저해상도. 원본(가로 1920px 이상) 수급 시 교체
 const SLIDE_SRC = ["/images/hero-1.png", "/images/hero-2.png"];
@@ -67,7 +68,7 @@ export default function HeroCarousel({ locale }: { locale: Locale }) {
         <div className="hero-split__text">
           <p className="hero-split__eyebrow">{t.eyebrow}</p>
           <h1 className="hero-split__title">
-            {t.title[0]} {t.title[1]}
+            <Typewriter text={`${t.title[0]} ${t.title[1]}`} />
           </h1>
           <p className="hero-split__desc">{t.desc}</p>
           <div className="hero__actions">

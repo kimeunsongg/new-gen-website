@@ -29,17 +29,17 @@ export function KakaoFloat({ locale }: { locale: Locale }) {
       >
         <KakaoIcon size={28} />
       </a>
-      {/* 버튼 위에 있을 때만 보이는 말풍선 — 버튼 전체가 링크라 말풍선 안은 표시용 */}
+      {/* 버튼 위에서 뜨고, 꼬리 쪽 통로로 들어가면 유지 — 말풍선을 벗어나면 사라짐 */}
       <div className="kakao-cta__bubble" id="kakao-bubble" role="tooltip">
         <p>
           <strong>{t.kakaoBubble.greeting}</strong>
           <br />
           {t.kakaoBubble.question}
         </p>
-        <span className="kakao-cta__link">
+        <a href={SITE.kakaoUrl} target="_blank" rel="noopener noreferrer" className="kakao-cta__link">
           {t.kakaoBubble.cta}
           <ChevronIcon size={16} />
-        </span>
+        </a>
       </div>
     </div>
   );
