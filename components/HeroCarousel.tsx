@@ -68,7 +68,7 @@ export default function HeroCarousel({ locale }: { locale: Locale }) {
         <div className="hero-split__text">
           <p className="hero-split__eyebrow">{t.eyebrow}</p>
           <h1 className="hero-split__title">
-            <Typewriter text={`${t.title[0]} ${t.title[1]}`} />
+            <Typewriter lines={t.title} />
           </h1>
           <p className="hero-split__desc">{t.desc}</p>
           <div className="hero__actions">

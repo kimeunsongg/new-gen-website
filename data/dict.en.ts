@@ -243,7 +243,8 @@ export const DICT_EN: Dict = {
   hero: {
     aria: "School activity photos",
     eyebrow: "Yeosu, Korea · Christian Alternative School",
-    title: ["An educational community dreaming 'the Dream'", "and 'the Dream Beyond' through a thousand books"],
+    // 영문은 한 줄로 두고 화면 폭에 맞춰 자연스럽게 줄바꿈
+    title: ["An educational community dreaming 'the Dream' and 'the Dream Beyond' through a thousand books"],
     desc: "We raise people who realize 'the Dream' and 'the Dream Beyond' to become the salt and light of the world.",
     ctaKakao: "Admissions",
     ctaAcademics: "Curriculum",
