@@ -14,11 +14,13 @@ function useCurrentMonth() {
   return [idx, setIdx] as const;
 }
 
-function EventList({ c, locale }: { c: CalMonth; locale: Locale }) {
+function EventList({ c, locale, schoolOnly = false }: { c: CalMonth; locale: Locale; schoolOnly?: boolean }) {
   const t = getDict(locale).calendar;
+  // schoolOnly: 공휴일·휴업일은 빼고 학교 행사만
+  const events = schoolOnly ? c.events.filter((e) => !e.holiday) : c.events;
   return (
     <ul className="cal-events">
-      {c.events.map((e, i) => (
+      {events.map((e, i) => (
         <li key={i}>
           <span className={`cal-events__date${e.holiday ? " is-holiday" : ""}`}>{t.dateLabel(c, e)}</span>
           <span>{t.eventLabel(e.label)}</span>
@@ -68,70 +70,120 @@ function MonthGrid({ c, locale }: { c: CalMonth; locale: Locale }) {
   );
 }
 
+function Legend({ locale }: { locale: Locale }) {
+  const t = getDict(locale).calendar;
+  return (
+    <p className="cal-legend">
+      <span className="cal-legend__dot" /> {t.legendEvent}
+    </p>
+  );
+}
+
+/** 연간 보기: 12개월 작은 달력 + 달별 일정 (원본 종이 달력처럼) */
+function YearView({ locale, onPick }: { locale: Locale; onPick: (i: number) => void }) {
+  const t = getDict(locale).calendar;
+  return (
+    <>
+      <div className="cal-year">
+        {CAL.map((c, i) => (
+          <section key={`${c.year}-${c.month}`} className="cal-mini" aria-label={t.homeTitle(c.year, c.month)}>
+            <div className="cal-mini__head">
+              <button type="button" className="cal-mini__title" onClick={() => onPick(i)} title={t.openMonth}>
+                {t.monthTitle(c.year, c.month)}
+              </button>
+              <p>
+                {t.schoolDays} <b>{t.days(c.schoolDays)}</b>
+              </p>
+            </div>
+            <MonthGrid c={c} locale={locale} />
+            <EventList c={c} locale={locale} schoolOnly />
+          </section>
+        ))}
+      </div>
+      <Legend locale={locale} />
+    </>
+  );
+}
+
 export function AcademicCalendar({ locale }: { locale: Locale }) {
   const t = getDict(locale).calendar;
   const [idx, setIdx] = useCurrentMonth();
+  const [view, setView] = useState<"month" | "year">("month");
   const c = CAL[idx];
 
   return (
     <div className="cal">
-      <ul className="cal-summary">
-        {CAL_SUMMARY.map((s, i) => (
-          <li key={s.label} className={s.strong ? "is-strong" : undefined}>
-            {t.summary[i]} <b>{t.days(s.days)}</b>
-          </li>
-        ))}
-      </ul>
-
-      <div className="cal-pager">
-        <button type="button" className="cal-pager__arrow" onClick={() => setIdx(idx - 1)} disabled={idx === 0} aria-label={t.prev}>
-          <ChevronIcon dir="left" />
-        </button>
-        <div className="cal-pager__months">
-          {CAL.map((m, i) => (
+      <div className="cal-top">
+        <ul className="cal-summary">
+          {CAL_SUMMARY.map((s, i) => (
+            <li key={s.label} className={s.strong ? "is-strong" : undefined}>
+              {t.summary[i]} <b>{t.days(s.days)}</b>
+            </li>
+          ))}
+        </ul>
+        <div className="cal-view" role="group" aria-label={t.viewAria}>
+          {(["year", "month"] as const).map((v) => (
             <button
-              key={m.month}
+              key={v}
               type="button"
-              className="cal-pager__month"
-              aria-pressed={i === idx}
-              onClick={() => setIdx(i)}
+              className="cal-view__opt"
+              aria-pressed={view === v}
+              onClick={() => setView(v)}
             >
-              {t.monthShort(m.month)}
+              {v === "month" ? t.viewMonth : t.viewYear}
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          className="cal-pager__arrow"
-          onClick={() => setIdx(idx + 1)}
-          disabled={idx === CAL.length - 1}
-          aria-label={t.next}
-        >
-          <ChevronIcon />
-        </button>
       </div>
 
-      <div className="cal-body">
-        <div className="cal-month">
-          <div className="cal-month__head">
-            <h3>
-              {t.monthTitle(c.year, c.month)} <span className="sr-only">{c.year}</span>
-            </h3>
-            <p>
-              {t.schoolDays} <b>{t.days(c.schoolDays)}</b>
+      {view === "year" ? (
+        <YearView
+          locale={locale}
+          onPick={(i) => {
+            setIdx(i);
+            setView("month");
+          }}
+        />
+      ) : (
+        <>
+          <div className="cal-pager">
+            <button type="button" className="cal-pager__arrow" onClick={() => setIdx(idx - 1)} disabled={idx === 0} aria-label={t.prev}>
+              <ChevronIcon dir="left" />
+            </button>
+            <p className="cal-pager__current" aria-live="polite">
+              {t.homeTitle(c.year, c.month)}
             </p>
+            <button
+              type="button"
+              className="cal-pager__arrow"
+              onClick={() => setIdx(idx + 1)}
+              disabled={idx === CAL.length - 1}
+              aria-label={t.next}
+            >
+              <ChevronIcon />
+            </button>
           </div>
-          <MonthGrid c={c} locale={locale} />
-          <p className="cal-legend">
-            <span className="cal-legend__dot" /> {t.legendEvent} <span className="cal-legend__red">15</span>{" "}
-            {t.legendHoliday}
-          </p>
-        </div>
-        <div className="cal-side">
-          <h4>{t.monthEvents(c.month)}</h4>
-          <EventList c={c} locale={locale} />
-        </div>
-      </div>
+
+          <div className="cal-body">
+            <div className="cal-month">
+              <div className="cal-month__head">
+                <h3>
+                  {t.monthTitle(c.year, c.month)} <span className="sr-only">{c.year}</span>
+                </h3>
+                <p>
+                  {t.schoolDays} <b>{t.days(c.schoolDays)}</b>
+                </p>
+              </div>
+              <MonthGrid c={c} locale={locale} />
+              <Legend locale={locale} />
+            </div>
+            <div className="cal-side">
+              <h4>{t.monthEvents(c.month)}</h4>
+              <EventList c={c} locale={locale} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

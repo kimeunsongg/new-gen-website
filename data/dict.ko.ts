@@ -41,7 +41,7 @@ export const DICT_KO = {
     homeAria: "뉴젠리더십학교 홈",
     navAria: "주 메뉴",
     skipLink: "본문 바로가기",
-    langSwitch: { label: "EN", aria: "English" },
+    langSwitch: { aria: "언어 선택" },
     address: SITE.address,
     contact: "CONTACT",
     phone: "Phone.",
@@ -63,15 +63,14 @@ export const DICT_KO = {
   hero: {
     aria: "학교 활동 사진",
     eyebrow: "전남 여수 · 기독교 대안학교",
-    // 좁은 화면에서는 이 두 덩어리 사이에서만 줄바꿈
     title: ["천권독서로 '꿈'과 '꿈너머꿈'을", "꾸는 교육 공동체"],
-    keepTogether: true,
     desc: "'꿈'과 '꿈너머꿈'을 실현하여 소금과 빛이 되는 인재를 양성합니다.",
-    ctaKakao: "카카오톡 입학 상담",
-    ctaAcademics: "교육과정 보기",
-    prev: "이전 사진",
-    next: "다음 사진",
+    ctaKakao: "입학 상담",
+    ctaAcademics: "교육과정",
     slides: ["학생이 마을 아이들에게 활동 자료를 보여 주는 모습", "교실에서 수업 중인 학생들"],
+    // 사진 왼쪽 아래 캡션 (사진 순서대로)
+    captions: ["K-리더십 프로젝트", "배움중심수업"],
+    goTo: (n: number) => `${n}번째 사진 보기`,
   },
 
   home: {
@@ -185,8 +184,8 @@ export const DICT_KO = {
       scale: 1,
       c4: { title: "사회적 실천", sub: "[정체성과 책임]" },
       c2: { lines: ["문학적", "소양"], sub: "[인류역사 자산 2]" },
-      c3: { pre: "경험과", box: "실험 · 제작", boxW: 168, x: 612, sub: "[경험, 실험 지식]" },
-      c1: { pre: "인류의", box: "지적 전통", boxW: 180, sub: "[인류역사 자산 1]" },
+      c3: { pre: "경험과", box: "실험 · 제작", x: 612, sub: "[경험, 실험 지식]" },
+      c1: { pre: "인류의", box: "지적 전통", sub: "[인류역사 자산 1]" },
     },
     reading: {
       bar: "교과연계 주제별 명저 독서목록",
@@ -204,13 +203,15 @@ export const DICT_KO = {
   calendar: {
     summary: ["1학기 수업일수", "여름계절학기", "2학기 수업일수", "겨울계절학기", "연간 총 수업일수"],
     days: (n: number) => `${n}일`,
-    monthShort: (m: number) => `${m}월`,
     monthTitle: (_y: number, m: number) => `${m}월`,
     weekdays: ["일", "월", "화", "수", "목", "금", "토"],
     caption: (y: number, m: number) => `${y}년 ${m}월 달력`,
+    viewAria: "달력 보기 방식",
+    viewMonth: "월간",
+    viewYear: "연간",
+    openMonth: "이 달 크게 보기",
     schoolDays: "수업일수",
     legendEvent: "학교 일정",
-    legendHoliday: "공휴일 · 휴업일",
     monthEvents: (m: number) => `${m}월 일정`,
     prev: "이전 달",
     next: "다음 달",

@@ -179,14 +179,12 @@ function FourTextVenn({ locale }: { locale: Locale }) {
 
         <text x={v.c3.x} y="835" fontSize="34">3</text>
         <text x={v.c3.x} y="897" fontSize={fs(28)}>{v.c3.pre}</text>
-        <rect x={v.c3.x - v.c3.boxW / 2} y="918" width={v.c3.boxW} height="46" fill="#E57A12" />
         <text x={v.c3.x} y="952" fontSize={fs(30)}>{v.c3.box}</text>
         <text x={v.c3.x} y="998" fontSize={sub(20)} opacity="0.9">{v.c3.sub}</text>
       </g>
       <g textAnchor="middle" fill="#171717">
         <text x="815" y="760" fontSize="32" fontWeight={700}>1</text>
         <text x="815" y="812" fontSize={fs(28)} fontWeight={600}>{v.c1.pre}</text>
-        <rect x={815 - v.c1.boxW / 2} y="828" width={v.c1.boxW} height="46" fill="#EDEEF2" />
         <text x="815" y="862" fontSize={fs(32)} fontWeight={800}>{v.c1.box}</text>
         <text x="815" y="905" fontSize={sub(20)}>{v.c1.sub}</text>
       </g>

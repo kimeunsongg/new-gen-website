@@ -93,4 +93,4 @@ export const FOUR_UM = [
   },
 ];
 
-export const ADMISSION_STEPS = ["입학 상담 신청", "방문 상담 및 서류 제출", "학생 · 학부모 면접", "입학 결정 및 등록"];
+export const ADMISSION_STEPS = ["입학 상담 신청", "방문 상담 및 서류 제출", "입학 결정 및 등록"];

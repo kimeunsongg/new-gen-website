@@ -6,6 +6,7 @@ import {
   KLeaderLogo,
   ReadingFlowPanel,
 } from "@/components/Curriculum";
+import HashScrollFix from "@/components/HashScrollFix";
 import ScaleToFit from "@/components/ScaleToFit";
 import { SectionTabs } from "@/components/ScrollNav";
 import { PageHeader, SectionHead } from "@/components/ui";
@@ -56,6 +57,7 @@ export default function AcademicsView({ locale }: { locale: Locale }) {
   let photo = 0;
   return (
     <>
+      <HashScrollFix />
       <PageHeader title={a.title} desc={a.desc} />
       <SectionTabs
         label={a.tabsAria}

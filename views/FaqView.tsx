@@ -17,7 +17,7 @@ export default function FaqView({ locale }: { locale: Locale }) {
             <h2 id="admission-title">{f.admissionTitle}</h2>
             <p>{f.admissionNote}</p>
           </div>
-          <ol className="grid-4 admission-steps">
+          <ol className="admission-steps">
             {f.steps.map((s, i) => (
               <li key={s}>
                 <span>{String(i + 1).padStart(2, "0")}</span>
