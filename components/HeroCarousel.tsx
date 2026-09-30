@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getDict } from "@/data/dict";
 import { localePath, type Locale } from "@/lib/i18n";
 import { KakaoButton } from "./Kakao";
@@ -39,9 +39,31 @@ export default function HeroCarousel({ locale }: { locale: Locale }) {
 
   const playing = auto && !reduced && n > 1;
 
+  // 왼쪽 칸 위에서 마우스를 움직이면 빛이 따라옴 (재렌더 없이 CSS 변수만 갱신)
+  const gradRef = useRef<HTMLDivElement>(null);
+  const followPointer = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gradRef.current;
+    if (!g || reduced || e.pointerType !== "mouse") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    g.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    g.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  const resetPointer = () => {
+    gradRef.current?.style.removeProperty("--mx");
+    gradRef.current?.style.removeProperty("--my");
+  };
+
   return (
     <section className="hero-split">
-      <div className="hero-split__panel">
+      <div className="hero-split__panel" onPointerMove={followPointer} onPointerLeave={resetPointer}>
+        {/* 그라데이션 배경: PNG 바탕 + 천천히 흐르는 색 덩어리 + 마우스를 따라오는 빛 + 입자 질감 */}
+        <div className="hero-gradient" aria-hidden="true" ref={gradRef}>
+          <span className="hero-gradient__blob hero-gradient__blob--a" />
+          <span className="hero-gradient__blob hero-gradient__blob--b" />
+          <span className="hero-gradient__blob hero-gradient__blob--c" />
+          <span className="hero-gradient__blob hero-gradient__blob--cursor" />
+          <span className="hero-gradient__grain" />
+        </div>
         <div className="hero-split__text">
           <p className="hero-split__eyebrow">{t.eyebrow}</p>
           <h1 className="hero-split__title">

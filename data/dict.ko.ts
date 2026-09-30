@@ -51,6 +51,11 @@ export const DICT_KO = {
     newWindow: "새 창",
     sns: { instagram: "인스타그램", youtube: "유튜브", blog: "네이버 블로그" },
     kakaoFloat: "카카오톡 상담",
+    kakaoBubble: {
+      greeting: "반갑습니다!",
+      question: "뉴젠리더십학교에 대해 궁금한 점이 있으신가요?",
+      cta: "상담하기",
+    },
     consult: {
       title: "입학 상담은 카카오톡으로",
       desc: ["입학은 별도의 복잡한 시험 없이, 편안한 대면 상담을 통해 진행됩니다.", "먼저 편하게 상담을 신청해 주세요."],

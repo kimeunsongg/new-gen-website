@@ -223,6 +223,11 @@ export const DICT_EN: Dict = {
     newWindow: "opens in a new window",
     sns: { instagram: "Instagram", youtube: "YouTube", blog: "Naver Blog" },
     kakaoFloat: "Chat on KakaoTalk",
+    kakaoBubble: {
+      greeting: "Hello!",
+      question: "Do you have any questions about Newgen Leadership School?",
+      cta: "Chat with us",
+    },
     consult: {
       title: "Admissions Consultations on KakaoTalk",
       desc: [

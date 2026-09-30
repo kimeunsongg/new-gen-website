@@ -602,11 +602,77 @@ a.lang-switch__opt:hover {
 }
 
 /* ───────── Kakao float ───────── */
-.kakao-float {
+/* 카카오 상담 버튼 + 말풍선 */
+.kakao-cta {
   position: fixed;
   right: 20px;
   bottom: 20px;
   z-index: 30;
+}
+.kakao-cta__bubble {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 14px);
+  width: 264px;
+  padding: 16px 18px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--label-neutral);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(6px) scale(0.98);
+  transform-origin: bottom right;
+  /* 사라질 때는 즉시 */
+  transition: none;
+}
+.kakao-cta__bubble strong {
+  font-size: 15px;
+  color: var(--label-normal);
+}
+/* 말풍선 꼬리 */
+.kakao-cta__bubble::before {
+  content: "";
+  position: absolute;
+  right: 24px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 0 0 3px 0;
+}
+/* 버튼 위에 있을 때만 — 나타날 때만 부드럽게 */
+.kakao-float:hover + .kakao-cta__bubble,
+.kakao-float:focus-visible + .kakao-cta__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.kakao-cta__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-navy);
+}
+@media (hover: none) {
+  .kakao-cta__bubble {
+    display: none;
+  }
+}
+.kakao-float {
+  position: relative;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -680,7 +746,114 @@ a.lang-switch__opt:hover {
   align-items: center;
   /* 왼쪽 글자를 아래 본문(1120px) 시작선에 맞춤. 위쪽은 헤더 높이만큼 더 띄움 */
   padding: calc(var(--header-h) + 48px) 48px 48px max(var(--gutter), calc((100vw - var(--container)) / 2));
-  background: #eef1f6;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #cedaf0 url("/images/hero-gradient.jpg") left center / cover no-repeat;
+}
+.hero-split__text {
+  position: relative;
+  z-index: 1;
+}
+
+/* 흐르는 그라데이션 — radial-gradient 덩어리를 천천히 이동·변형 (CSS filter 대신 그라데이션을 써서
+   헤더 유리 캡처(html2canvas)에도 부드럽게 찍힘) */
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-gradient__blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.hero-gradient__blob--a {
+  width: 90%;
+  aspect-ratio: 1;
+  left: -30%;
+  top: 18%;
+  background: radial-gradient(closest-side, rgba(105, 143, 210, 0.32), rgba(105, 143, 210, 0) 100%);
+  animation: hero-blob-a 18s ease-in-out infinite alternate;
+}
+.hero-gradient__blob--b {
+  width: 75%;
+  aspect-ratio: 1;
+  right: -25%;
+  top: -20%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 100%);
+  animation: hero-blob-b 22s ease-in-out infinite alternate;
+}
+.hero-gradient__blob--c {
+  width: 70%;
+  aspect-ratio: 1;
+  right: -15%;
+  bottom: -30%;
+  background: radial-gradient(closest-side, rgba(159, 183, 226, 0.35), rgba(159, 183, 226, 0) 100%);
+  animation: hero-blob-c 26s ease-in-out infinite alternate;
+}
+/* PNG 바탕 자체를 옅게 — 글자가 잘 읽히도록 흰 막 */
+.hero-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.35) 60%, rgba(255, 255, 255, 0.2));
+}
+/* 3) 마우스를 따라오는 빛 (위치는 --mx/--my, 따라올 때 살짝 늦게) */
+.hero-gradient__blob--cursor {
+  width: 62%;
+  aspect-ratio: 1;
+  left: var(--mx, 28%);
+  top: var(--my, 58%);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(128, 160, 217, 0.4), rgba(174, 195, 231, 0.18) 55%, rgba(174, 195, 231, 0) 100%);
+  transition:
+    left 1.1s cubic-bezier(0.22, 0.8, 0.26, 1),
+    top 1.1s cubic-bezier(0.22, 0.8, 0.26, 1);
+}
+/* 입자 질감 */
+.hero-gradient__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes hero-blob-a {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(12%, -10%) scale(1.12, 0.95);
+  }
+  100% {
+    transform: translate(4%, 14%) scale(0.95, 1.08);
+  }
+}
+@keyframes hero-blob-b {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-18%, 16%) scale(1.15);
+  }
+}
+@keyframes hero-blob-c {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-14%, -12%) scale(1.1, 0.9);
+  }
+  100% {
+    transform: translate(-4%, -22%) scale(0.92, 1.1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient__blob {
+    animation: none;
+  }
 }
 .hero-split__text {
   display: flex;
