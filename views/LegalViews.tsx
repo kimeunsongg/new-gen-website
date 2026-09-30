@@ -142,7 +142,7 @@ export function TermsView({ locale }: { locale: Locale }) {
             <br />
             Registration number: <P />
             <br />
-            Address: 5F, 30 Mangma-ro, Yeosu-si, Jeollanam-do, Korea
+            Address: 5F, 30 Mangma-ro, Yeosu-si, Jeonnam-Gwangju Integrated Special City, Korea
             <br />
             Phone: {SITE.phone}
           </p>

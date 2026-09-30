@@ -214,7 +214,7 @@ export const DICT_EN: Dict = {
     navAria: "Main menu",
     skipLink: "Skip to content",
     langSwitch: { aria: "Language" },
-    address: "5F, 30 Mangma-ro, Yeosu-si, Jeollanam-do, Korea",
+    address: "5F, 30 Mangma-ro, Yeosu-si, Jeonnam-Gwangju Integrated Special City, Korea",
     contact: "CONTACT",
     phone: "Phone.",
     kakao: "KakaoTalk.",
