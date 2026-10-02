@@ -7,8 +7,8 @@ import { localePath, type Locale } from "@/lib/i18n";
 import { KakaoButton } from "./Kakao";
 import Typewriter from "./Typewriter";
 
-// ⚠ 현재 사진은 228px / 258px 저해상도. 원본(가로 1920px 이상) 수급 시 교체
-const SLIDE_SRC = ["/images/hero-1.png", "/images/hero-2.png"];
+// 원본: reference/Pictures/해외사역.jpg, 독서수업.png
+const SLIDE_SRC = ["/images/hero-1.jpg", "/images/hero-2.jpg"];
 const INTERVAL = 5000;
 
 function prefersReducedMotion() {

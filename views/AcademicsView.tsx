@@ -13,14 +13,17 @@ import { PageHeader, SectionHead } from "@/components/ui";
 import { getDict } from "@/data/dict";
 import type { Locale } from "@/lib/i18n";
 
-// 브로셔 배치대로: 1·2는 한 줄, 3·4는 각각 한 줄. w/h는 원본 픽셀 크기(자르지 않고 비율 유지)
+// 두 장씩 한 줄(2×2). w/h는 파일 픽셀 크기 — 자르지 않고, 한 줄의 두 사진 높이를 맞춤
+// 원본: reference/Pictures/해외사역·찬양·라디오·숲속음악회
 const KLEADER_PHOTO_ROWS = [
   [
-    { src: "/images/kleader-1.jpg", w: 359, h: 290 },
-    { src: "/images/kleader-2.jpg", w: 547, h: 292 },
+    { src: "/images/kleader-1.jpg", w: 1400, h: 1050 },
+    { src: "/images/kleader-2.jpg", w: 1400, h: 933 },
   ],
-  [{ src: "/images/kleader-3.jpg", w: 969, h: 302 }],
-  [{ src: "/images/kleader-4.jpg", w: 978, h: 310 }],
+  [
+    { src: "/images/kleader-3.jpg", w: 1536, h: 1024 },
+    { src: "/images/kleader-4.jpg", w: 1600, h: 901 },
+  ],
 ];
 
 /** 브로셔 한 면: 옅은 색 배경 + 큰 제목 + 흰 카드 + 책갈피 리본 */
