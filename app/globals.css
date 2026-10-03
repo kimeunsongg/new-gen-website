@@ -2225,6 +2225,14 @@ a.lang-switch__opt:hover {
   color: var(--label-normal);
   margin-bottom: 8px;
 }
+.legal a {
+  color: var(--primary-normal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal p + p {
+  margin-top: 8px;
+}
 .legal section {
   margin-top: 36px;
 }

@@ -1,18 +1,27 @@
-import { Pending } from "@/components/ui";
 import { SITE } from "@/data/site";
 import type { Locale } from "@/lib/i18n";
 
 // 법적 문서는 문장 구조가 달라 언어별로 따로 작성. ⚠ 영문은 번역 초안
 
+const EFFECTIVE = { ko: "2026년 10월 5일", en: "October 5, 2026" };
+const OFFICER = { ko: "정재천", en: "Jeong Jae-cheon" };
+const REG_NO = "131-82-86370";
+const KAKAO_PRIVACY = "https://www.kakao.com/policy/privacy";
+
+function ExtLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  );
+}
+
 export function PrivacyView({ locale }: { locale: Locale }) {
   if (locale === "en") {
-    const P = () => <Pending>To be provided</Pending>;
     return (
       <article className="legal container">
         <h1>Privacy Policy</h1>
-        <p>
-          Effective date: <P />
-        </p>
+        <p>Effective date: {EFFECTIVE.en}</p>
         <section>
           <h2>1. Collection of Personal Information</h2>
           <p>
@@ -21,18 +30,25 @@ export function PrivacyView({ locale }: { locale: Locale }) {
           </p>
         </section>
         <section>
-          <h2>2. Consultation Channel</h2>
+          <h2>2. Consultations</h2>
           <p>
-            Admissions consultations take place through our KakaoTalk channel ({SITE.kakaoId}). Information provided during
-            consultations is subject to Kakao&apos;s privacy policy, and the school uses it only for consultation purposes.
-            Retention period for consultation records: <P />
+            Admissions consultations take place through our KakaoTalk channel ({SITE.kakaoId}) and by phone ({SITE.phone}).
+            During a consultation we receive only what is needed for it, such as the names of the parent and student, contact
+            details and grade. Phone consultations are not recorded.
+          </p>
+          <p>
+            Conversations exchanged on KakaoTalk are stored and processed by Kakao under its own{" "}
+            <ExtLink href={KAKAO_PRIVACY}>privacy policy</ExtLink>. Consultation notes kept separately by the school are
+            retained for <strong>one year from the end of the consultation</strong> and then destroyed. Documents of students
+            who enroll are kept separately under the school&apos;s student-record rules.
           </p>
         </section>
         <section>
           <h2>3. Automatically Collected Information</h2>
           <p>
-            Use of visitor analytics tools: <P /> Once the hosting environment is finalized, automatically collected items
-            such as access logs and their retention periods will be described here.
+            The website does not use visitor analytics tools (such as Google Analytics) and does not use cookies. However, the
+            servers of our hosting provider (Railway) may temporarily keep access logs (IP address, access time and requested
+            page) for security and troubleshooting, in accordance with the provider&apos;s policy.
           </p>
         </section>
         <section>
@@ -42,9 +58,9 @@ export function PrivacyView({ locale }: { locale: Locale }) {
         <section>
           <h2>5. Privacy Officer</h2>
           <p>
-            Name: <P />
+            Name: {OFFICER.en}
             <br />
-            Email: <P />
+            Position: Principal
             <br />
             Phone: {SITE.phone}
           </p>
@@ -56,9 +72,7 @@ export function PrivacyView({ locale }: { locale: Locale }) {
   return (
     <article className="legal container">
       <h1>개인정보처리방침</h1>
-      <p>
-        시행일: <Pending />
-      </p>
+      <p>시행일: {EFFECTIVE.ko}</p>
       <section>
         <h2>1. 개인정보의 수집</h2>
         <p>
@@ -67,18 +81,24 @@ export function PrivacyView({ locale }: { locale: Locale }) {
         </p>
       </section>
       <section>
-        <h2>2. 상담 채널</h2>
+        <h2>2. 상담</h2>
         <p>
-          입학 상담은 카카오톡 채널({SITE.kakaoId})을 통해 이루어집니다. 상담 과정에서 제공되는 정보는 카카오의
-          개인정보처리방침이 적용되며, 학교는 상담 목적 범위 안에서만 이를 이용합니다. 상담 기록 보관 기간:{" "}
-          <Pending />
+          입학 상담은 카카오톡 채널({SITE.kakaoId})과 전화({SITE.phone})로 진행됩니다. 상담 과정에서는 보호자·학생 이름,
+          연락처, 학년 등 상담에 필요한 범위의 정보만 받습니다. 전화 상담은 녹음하지 않습니다.
+        </p>
+        <p>
+          카카오톡으로 주고받은 대화는 카카오의 <ExtLink href={KAKAO_PRIVACY}>개인정보처리방침</ExtLink>에 따라 카카오가
+          보관·처리합니다. 학교가 별도로 기록한 상담 내용은 <strong>상담 종료일로부터 1년간 보관한 뒤 파기</strong>합니다.
+          입학한 학생의 서류는 학적 관리 기준에 따라 별도로 보관합니다.
         </p>
       </section>
       <section>
         <h2>3. 자동으로 수집되는 정보</h2>
+        {/* 방문 통계 도구(GA, 네이버 애널리틱스 등)를 추가하면 이 항목을 바꿔야 함 */}
         <p>
-          방문 통계 도구 사용 여부: <Pending /> 호스팅 환경이 확정되면 접속 기록 등 자동 수집 항목과 보관 기간을 이
-          곳에 안내합니다.
+          홈페이지는 방문 통계 도구(구글 애널리틱스 등)를 사용하지 않으며, 쿠키를 사용하지 않습니다. 다만 홈페이지 호스팅
+          업체(Railway)의 서버에 보안·장애 대응을 위한 접속 기록(IP 주소, 접속 시각, 요청한 페이지)이 업체 정책에 따라
+          일시적으로 남을 수 있습니다.
         </p>
       </section>
       <section>
@@ -87,10 +107,11 @@ export function PrivacyView({ locale }: { locale: Locale }) {
       </section>
       <section>
         <h2>5. 개인정보 보호책임자</h2>
+        {/* TODO: 이메일을 받으면 "이메일:" 줄 추가 */}
         <p>
-          성명: <Pending />
+          성명: {OFFICER.ko}
           <br />
-          이메일: <Pending />
+          직책: 교장
           <br />
           전화: {SITE.phone}
         </p>
@@ -101,13 +122,10 @@ export function PrivacyView({ locale }: { locale: Locale }) {
 
 export function TermsView({ locale }: { locale: Locale }) {
   if (locale === "en") {
-    const P = () => <Pending>To be provided</Pending>;
     return (
       <article className="legal container">
         <h1>Terms of Use</h1>
-        <p>
-          Effective date: <P />
-        </p>
+        <p>Effective date: {EFFECTIVE.en}</p>
         <section>
           <h2>1. Purpose</h2>
           <p>These terms set out the conditions and procedures for using the Newgen Leadership School website (the &ldquo;Website&rdquo;).</p>
@@ -138,9 +156,9 @@ export function TermsView({ locale }: { locale: Locale }) {
           <p>
             Name: Newgen Leadership School
             <br />
-            Representative: <P />
+            Representative: {OFFICER.en}
             <br />
-            Registration number: <P />
+            Registration No.: {REG_NO}
             <br />
             Address: 5F, 30 Mangma-ro, Yeosu-si, Jeonnam-Gwangju Integrated Special City, Korea
             <br />
@@ -154,9 +172,7 @@ export function TermsView({ locale }: { locale: Locale }) {
   return (
     <article className="legal container">
       <h1>이용약관</h1>
-      <p>
-        시행일: <Pending />
-      </p>
+      <p>시행일: {EFFECTIVE.ko}</p>
       <section>
         <h2>1. 목적</h2>
         <p>이 약관은 {SITE.name} 홈페이지(이하 &ldquo;홈페이지&rdquo;)의 이용 조건과 절차를 정합니다.</p>
@@ -187,9 +203,9 @@ export function TermsView({ locale }: { locale: Locale }) {
         <p>
           상호: {SITE.name}
           <br />
-          대표자: <Pending />
+          대표자: {OFFICER.ko}
           <br />
-          고유번호: <Pending />
+          고유번호: {REG_NO}
           <br />
           주소: {SITE.address}
           <br />
