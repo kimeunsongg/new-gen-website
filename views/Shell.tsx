@@ -22,6 +22,8 @@ export function rootMetadata(locale: Locale): Metadata {
       images: [{ url: "/og.png", width: 1200, height: 630, alt: m.siteName }],
     },
     icons: { icon: "/images/logo-emblem.png" },
+    // 네이버 서치어드바이저 소유확인
+    verification: { other: { "naver-site-verification": "cbc45262909e1e98cf0b47a6116a6132aa425580" } },
   };
 }
 
