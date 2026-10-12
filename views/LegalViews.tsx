@@ -47,7 +47,7 @@ export function PrivacyView({ locale }: { locale: Locale }) {
           <h2>3. Automatically Collected Information</h2>
           <p>
             The website does not use visitor analytics tools (such as Google Analytics) and does not use cookies. However, the
-            servers of our hosting provider (Railway) may temporarily keep access logs (IP address, access time and requested
+            servers of our hosting provider (Cloudflare) may temporarily keep access logs (IP address, access time and requested
             page) for security and troubleshooting, in accordance with the provider&apos;s policy.
           </p>
         </section>
@@ -97,7 +97,7 @@ export function PrivacyView({ locale }: { locale: Locale }) {
         {/* 방문 통계 도구(GA, 네이버 애널리틱스 등)를 추가하면 이 항목을 바꿔야 함 */}
         <p>
           홈페이지는 방문 통계 도구(구글 애널리틱스 등)를 사용하지 않으며, 쿠키를 사용하지 않습니다. 다만 홈페이지 호스팅
-          업체(Railway)의 서버에 보안·장애 대응을 위한 접속 기록(IP 주소, 접속 시각, 요청한 페이지)이 업체 정책에 따라
+          업체(Cloudflare)의 서버에 보안·장애 대응을 위한 접속 기록(IP 주소, 접속 시각, 요청한 페이지)이 업체 정책에 따라
           일시적으로 남을 수 있습니다.
         </p>
       </section>
