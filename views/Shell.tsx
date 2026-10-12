@@ -21,7 +21,14 @@ export function rootMetadata(locale: Locale): Metadata {
       description: m.description,
       images: [{ url: "/og.png", width: 1200, height: 630, alt: m.siteName }],
     },
-    icons: { icon: "/images/logo-emblem.png" },
+    // 구글 검색 파비콘은 48px 배수 정사각형이어야 함
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "48x48" },
+        { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      ],
+      apple: "/apple-touch-icon.png",
+    },
     // 네이버 서치어드바이저 소유확인
     verification: { other: { "naver-site-verification": "cbc45262909e1e98cf0b47a6116a6132aa425580" } },
   };
