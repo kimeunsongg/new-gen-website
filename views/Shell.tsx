@@ -30,7 +30,7 @@ export function rootMetadata(locale: Locale): Metadata {
       apple: "/apple-touch-icon.png",
     },
     // 네이버 서치어드바이저 소유확인
-    verification: { other: { "naver-site-verification": "cbc45262909e1e98cf0b47a6116a6132aa425580" } },
+    verification: { other: { "naver-site-verification": "c731ca5514444f52d742f0ceb1ebd90423ce0ed6" } },
   };
 }
 
