@@ -33,7 +33,7 @@ const EVENT_LABELS: Record<string, string> = {
   "독서의 날": "Reading Day",
   북토크: "Book Talk",
   개교기념일: "School Anniversary",
-  봉사활동: "Volunteer Service",
+  "밥차 봉사활동": "Meal Truck Volunteer Service",
   항공우주캠프: "Aerospace Camp",
   방학식: "Closing Ceremony",
   계절학기: "Seasonal Session",
@@ -42,18 +42,18 @@ const EVENT_LABELS: Record<string, string> = {
   캠프: "Camp",
   개천절: "National Foundation Day",
   한글날: "Hangeul Day",
-  "섬박람회 체험학습": "Island Expo Field Trip",
+  "섬박람회 체험활동": "Island Expo Field Trip",
+  서울캠프: "Seoul Camp",
+  진로체험활동: "Career Exploration Activity",
   입학상담주간: "Admissions Counseling Week",
   입학설명회: "Admissions Info Session",
   겨울방학식: "Winter Break Ceremony",
   성탄절: "Christmas Day",
   신정: "New Year's Day",
-  "무빙클래스 준비": "Moving Class Prep",
-  무빙클래스: "Moving Class",
   설연휴: "Lunar New Year Holidays",
   전교임원선거: "Student Council Election",
 };
-const END_LABELS: Record<string, string> = { "12.2(수)": "Dec 2 (Wed)" };
+const END_LABELS: Record<string, string> = {};
 
 const HISTORY_EN: Record<string, string> = {
   "여수꿈의학교 설립": "Founded as Yeosu Dream School",
