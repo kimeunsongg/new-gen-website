@@ -212,6 +212,8 @@ export const DICT_EN: Dict = {
     schoolName: SCHOOL,
     homeAria: `${SCHOOL} home`,
     navAria: "Main menu",
+    menuOpen: "Open menu",
+    menuClose: "Close menu",
     skipLink: "Skip to content",
     langSwitch: { aria: "Language" },
     address: "5F, 30 Mangma-ro, Yeosu-si, Jeonnam-Gwangju Integrated Special City, Korea",

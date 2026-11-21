@@ -40,6 +40,8 @@ export const DICT_KO = {
     schoolName: SITE.name,
     homeAria: "뉴젠리더십학교 홈",
     navAria: "주 메뉴",
+    menuOpen: "메뉴 열기",
+    menuClose: "메뉴 닫기",
     skipLink: "본문 바로가기",
     langSwitch: { aria: "언어 선택" },
     address: SITE.address,
