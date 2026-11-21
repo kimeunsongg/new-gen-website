@@ -19,6 +19,31 @@ function useScrolled() {
   return scrolled;
 }
 
+const HERO = ".hero-split";
+
+/** Home 히어로(사진) 위에 있는 동안 true — 히어로 아래 끝이 헤더를 지나면 false */
+function useOverHero(enabled: boolean) {
+  const [over, setOver] = useState(enabled);
+  useEffect(() => {
+    if (!enabled) {
+      setOver(false);
+      return;
+    }
+    const check = () => {
+      const hero = document.querySelector(HERO);
+      setOver(!!hero && hero.getBoundingClientRect().bottom > 64);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, [enabled]);
+  return over;
+}
+
 function isActive(pathname: string, href: string) {
   const p = pathname.endsWith("/") ? pathname : `${pathname}/`;
   return href === "/" || href === "/en/" ? p === href : p.startsWith(href);
@@ -29,6 +54,8 @@ export default function Header({ locale }: { locale: Locale }) {
   const t = getDict(locale).common;
   const { target } = switchLocalePath(pathname);
   const scrolled = useScrolled();
+  const isHome = pathname === "/" || pathname === "/en" || pathname === "/en/";
+  const overHero = useOverHero(isHome);
   const [open, setOpen] = useState(false);
 
   // 페이지를 옮기면 모바일 메뉴 닫기
@@ -71,7 +98,9 @@ export default function Header({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <header className={`site-header${scrolled ? " is-scrolled" : ""}${open ? " is-menu-open" : ""}`}>
+      <header
+        className={`site-header${scrolled ? " is-scrolled" : ""}${overHero ? " is-over-hero" : ""}${open ? " is-menu-open" : ""}`}
+      >
         <div className="container site-header__inner">
           <Link href={localePath(locale, "/")} className="site-header__logo" aria-label={t.homeAria}>
             <img src="/images/logo-horizontal.png" alt="" width={1200} height={207} className="site-header__logo-full" />

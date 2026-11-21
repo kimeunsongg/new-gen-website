@@ -284,6 +284,13 @@ a:focus-visible {
 .site-header.is-menu-open::before {
   opacity: 1;
 }
+/* PC Home: 히어로 사진 위에서는 글자와 사진이 겹쳐 보이지 않게 흰 배경 */
+@media (min-width: 861px) {
+  .site-header.is-over-hero::before {
+    opacity: 1;
+    background: #fff;
+  }
+}
 .site-header__inner {
   position: relative;
   height: var(--header-h);
