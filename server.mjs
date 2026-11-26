@@ -5,6 +5,7 @@ import http from "node:http";
 import { promisify } from "node:util";
 import compression from "compression";
 import handler from "serve-handler";
+import { shortTitle } from "./lib/blog-title.mjs";
 
 const PORT = Number(process.env.PORT) || 3000;
 const RSS_URL = "https://rss.blog.naver.com/newgenleadership.xml";
@@ -26,7 +27,7 @@ function parseRss(xml) {
     .map(([, item]) => {
       const img = text(item, "description").match(/<img[^>]+src="([^"]+)"/);
       return {
-        title: text(item, "title").replace(/\s+/g, " "),
+        title: shortTitle(text(item, "title").replace(/\s+/g, " ")),
         href: text(item, "link").split("?")[0],
         date: new Date(text(item, "pubDate")).toISOString(),
         category: text(item, "category"),
