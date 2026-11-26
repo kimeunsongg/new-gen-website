@@ -1,7 +1,7 @@
-import { BLOG_POSTS } from "@/data/blog";
 import { getDict } from "@/data/dict";
 import { SNS } from "@/data/site";
 import type { Locale } from "@/lib/i18n";
+import BlogPosts from "./BlogPosts";
 import { BlogIcon } from "./Icons";
 import { SectionHead } from "./ui";
 
@@ -23,19 +23,7 @@ export default function BlogSection({ locale }: { locale: Locale }) {
   return (
     <section className="container section" aria-labelledby="blog-title">
       <SectionHead id="blog-title" eyebrow={t.eyebrow} title={t.title} />
-      <ul className="grid-4 blog-posts">
-        {BLOG_POSTS.map((p) => (
-          <li key={p.href}>
-            <a href={p.href} target="_blank" rel="noopener noreferrer" className="blog-post">
-              <span className="blog-post__media">
-                <img src={p.image} alt="" loading="lazy" />
-              </span>
-              <span className="blog-post__cat">{p.category[locale]}</span>
-              <strong className="blog-post__title">{p.title[locale]}</strong>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <BlogPosts locale={locale} />
 
       {/* 카드 전체가 하나의 링크. 글자는 왼쪽 아래, 유리 원형 ↗는 오른쪽 위 */}
       <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className="blog-banner">
