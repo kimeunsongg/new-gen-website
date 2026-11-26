@@ -1,5 +1,5 @@
 // 운영 서버: out/ 정적 파일(이전 `serve out`과 같은 동작) + 네이버 블로그 RSS API
-//   GET /api/blog          블로그 최신 글 목록(JSON, 10분 캐시)
+//   GET /api/blog          블로그 최신 글 목록(JSON). 네이버 RSS는 하루 한 번만 읽음
 //   GET /api/blog/img?u=…  네이버 사진 대신 받아 전달(외부 사이트 표시가 막혀 있어서)
 import http from "node:http";
 import { promisify } from "node:util";
@@ -9,7 +9,7 @@ import { shortTitle } from "./lib/blog-title.mjs";
 
 const PORT = Number(process.env.PORT) || 3000;
 const RSS_URL = "https://rss.blog.naver.com/newgenleadership.xml";
-const FEED_TTL = 10 * 60 * 1000;
+const FEED_TTL = 24 * 60 * 60 * 1000; // 하루
 const IMG_HOST = /(^|\.)pstatic\.net$/;
 
 const compress = promisify(compression());
@@ -83,7 +83,7 @@ http
     const url = new URL(req.url, "http://localhost");
     if (url.pathname === "/api/blog") {
       const posts = await getPosts();
-      return send(res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=600" }, JSON.stringify(posts));
+      return send(res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600" }, JSON.stringify(posts));
     }
     if (url.pathname === "/api/blog/img") return blogImage(url, res);
 
