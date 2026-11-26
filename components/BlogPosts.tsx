@@ -20,8 +20,8 @@ function merge(feed: FeedPost[], locale: Locale): Card[] {
   return [...recent, ...rest].slice(0, BLOG_COUNT);
 }
 
-/** 처음엔 고른 글로 그리고, 방문 시점에 /api/blog(server.mjs)의 최신 글로 바꿔 끼움.
-    영문 페이지는 RSS 제목이 한국어라 고른 글만 사용. next dev에는 /api가 없어 항상 고른 글. */
+/** 처음엔 고른 글로 그리고, 방문 시점에 /api/blog(functions/api/blog/)의 최신 글로 바꿔 끼움.
+    영문 페이지는 RSS 제목이 한국어라 고른 글만 사용. next dev에는 /api가 없어 항상 고른 글(npm run preview로 확인). */
 export default function BlogPosts({ locale }: { locale: Locale }) {
   const [cards, setCards] = useState(() => fallback(locale));
 
