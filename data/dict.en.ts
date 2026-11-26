@@ -263,6 +263,13 @@ export const DICT_EN: Dict = {
     umLink: "Curriculum Operation",
     monthAria: "This month's schedule",
     faqTitle: "FAQ",
+    blog: {
+      eyebrow: "Blog",
+      title: "School Stories",
+      bannerLabel: "Newgen Leadership School Blog",
+      bannerTitle: "See more school news on our blog",
+      newWindow: "(opens in a new window)",
+    },
   },
 
   talents: TALENTS.map((t) => ({ ...t, ...TALENTS_EN[t.name] })),

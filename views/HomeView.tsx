@@ -1,3 +1,4 @@
+import BlogSection from "@/components/BlogSection";
 import { MonthSchedule } from "@/components/Calendar";
 import FaqAccordion from "@/components/FaqAccordion";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -62,6 +63,8 @@ export default function HomeView({ locale }: { locale: Locale }) {
           <FaqAccordion items={homeFaq} />
         </div>
       </section>
+
+      <BlogSection locale={locale} />
     </>
   );
 }

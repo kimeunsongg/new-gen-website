@@ -89,6 +89,13 @@ export const DICT_KO = {
     umLink: "교육과정 운영",
     monthAria: "이번 달 학사일정",
     faqTitle: "FAQ",
+    blog: {
+      eyebrow: "Blog",
+      title: "학교 이야기",
+      bannerLabel: "뉴젠리더십학교 블로그",
+      bannerTitle: "블로그에서 학교 소식 더 보기",
+      newWindow: "(새 창으로 열림)",
+    },
   },
 
   talents: TALENTS,
